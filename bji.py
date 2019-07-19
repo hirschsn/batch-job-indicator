@@ -17,9 +17,9 @@ from gi.repository import GObject
 from gi.repository import Notify
 
 ICONS = {
-    "Q": os.path.realpath("./queued.svg"),
-    "R": os.path.realpath("./running.svg"),
-    "C": os.path.realpath("./completed.svg"),
+    "Q": os.path.realpath("./icons/queued.svg"),
+    "R": os.path.realpath("./icons/running.svg"),
+    "C": os.path.realpath("./icons/completed.svg"),
 }
 
 JOBS = {}
