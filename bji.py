@@ -1,4 +1,7 @@
 #!/usr/bin/python2
+#
+# See LICENSE for license details.
+#
 from __future__ import print_function
 
 import os
