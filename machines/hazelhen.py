@@ -4,7 +4,7 @@ import re
 
 
 class MachineHazelhen(object):
-    """Parser for HLRS's `Hazel Hen'."""
+    """Parser for Hazel Hen's PBS batch system at HLRS."""
     _CMD = "qstat -u \"{}\""
     _jobre = re.compile(r"^\d+\.hazelhen-batch.*")
 
