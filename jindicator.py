@@ -16,6 +16,16 @@ _ICONS = {
 }
 
 
+def _make_menu(close_callback):
+    """Returns a menu with one item (Close)."""
+    menu = gtk.Menu()
+    item_quit = gtk.MenuItem("Close")
+    item_quit.connect("activate", close_callback)
+    menu.append(item_quit)
+    menu.show_all()
+    return menu
+
+
 class JIndicator(object):
     """Places an indicator for a job in the notification area."""
 
@@ -26,16 +36,7 @@ class JIndicator(object):
         self.indicator = appindicator.Indicator.new(
             "Job-Indicator", _ICONS[state], category=appindicator.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        self.indicator.set_menu(self.new_menu())
-
-    def new_menu(self):
-        """Returns a menu with one item (Close)."""
-        menu = gtk.Menu()
-        item_quit = gtk.MenuItem("Close")
-        item_quit.connect("activate", self.close)
-        menu.append(item_quit)
-        menu.show_all()
-        return menu
+        self.indicator.set_menu(_make_menu(self.close))
 
     def close(self, _):
         """Callback for the "Close" menu item.
@@ -50,6 +51,7 @@ class JIndicator(object):
             return
         self.indicator.set_icon(_ICONS[new_state])
         # self.indicator.set_status(appindicator.IndicatorStatus.ATTENTION)
+        # TODO: Make notification work
         notf = Notify.Notification.new("Hazelhen Job Watcher", "{} switched to state {}".format(
             self.jobid, new_state), _ICONS[new_state])
         notf.show()
