@@ -49,7 +49,7 @@ class JIndicator(object):
         # Immediately hide icon. Application will quit only from parse(), i.e. the next time qstat gets executed
         self.indicator.set_status(appindicator.IndicatorStatus.PASSIVE)
         del JOBS[self.jobid]
-        if len(JOBS) == 0:
+        if not JOBS:
             global QUIT
             QUIT = True
 
