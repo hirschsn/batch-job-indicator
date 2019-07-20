@@ -50,6 +50,7 @@ class JIndicator(object):
         self.indicator.set_status(appindicator.IndicatorStatus.PASSIVE)
         del JOBS[self.jobid]
         if len(JOBS) == 0:
+            global QUIT
             QUIT = True
 
     def set_state(self, new_state):
