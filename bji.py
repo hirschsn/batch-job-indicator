@@ -10,9 +10,9 @@ import threading
 import sys
 import subprocess
 import re
-gi.require_version ("Gtk", "3.0")
-gi.require_version ("AppIndicator3", "0.1")
-gi.require_version ("Notify", "0.7")
+gi.require_version("Gtk", "3.0")
+gi.require_version("AppIndicator3", "0.1")
+gi.require_version("Notify", "0.7")
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 from gi.repository.AppIndicator3 import IndicatorStatus
@@ -30,7 +30,7 @@ JOBS = {}
 QUIT = False
 
 class JIndicator(object):
-    def __init__ (self, jobid, state):
+    def __init__(self, jobid, state):
         self.jobid = jobid
         self.state = state
         self.indicator = appindicator.Indicator.new("Job-Indicator", ICONS[state], category=appindicator.IndicatorCategory.APPLICATION_STATUS)
