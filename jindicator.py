@@ -15,6 +15,12 @@ _ICONS = {
     "C": os.path.realpath("./icons/completed.svg"),
 }
 
+_TEXT = {
+    "Q": "Queued",
+    "R": "Running",
+    "C": "Completed",
+}
+
 
 def _make_menu(close_callback):
     """Returns a menu with one item (Close)."""
@@ -55,7 +61,7 @@ class JIndicator(object):
         self.indicator.set_icon(_ICONS[new_state])
         # self.indicator.set_status(appindicator.IndicatorStatus.ATTENTION)
         # TODO: Make notification work
-        notf = Notify.Notification.new("Batch Job Watcher", "Job `{}', state: {}".format(
-            self.jobid, new_state), _ICONS[new_state])
+        notf = Notify.Notification.new("Batch Job Watcher", "{}\n{}".format(
+            self.jobid, _TEXT[new_state]), _ICONS[new_state])
         notf.set_timeout(0)
         notf.show()

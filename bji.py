@@ -50,7 +50,7 @@ def main():
     Notify.init("Batch Job Watcher")
     parser = argparse.ArgumentParser(description="Watch batch jobs on foreign machines and display a tray icons.")
     parser.add_argument("--user", dest="user", help="Username on the foreign machine", type=str, default=r"$(whoami)")
-    parser.add_argument("-n", dest="every_n", metavar="SEC", help="Number of seconds between two checks", type=int, default=60)
+    parser.add_argument("-n", dest="every_n", metavar="SEC", help="Number of seconds between two checks", type=int, default=10)
     parser.add_argument("machine", metavar="MACHINE", help="Machine to watch", type=str)
     args = parser.parse_args()
 
