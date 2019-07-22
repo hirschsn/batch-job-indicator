@@ -6,6 +6,8 @@ with libnotify.
 
 ![screenshot](https://raw.githubusercontent.com/hirschsn/batch-job-indicator/master/screenshot.png)
 
+(The notification in this screenshot is handled by the dunst notification-daemon.)
+
 ## Installation
 
 I currently don't feel like writing some fancy setup.py-thingy.
