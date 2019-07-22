@@ -31,12 +31,14 @@ class JIndicator(object):
 
     def __init__(self, jobid, state, close_cb):
         self.jobid = jobid
-        self.state = state
         self.close_callback = close_cb
         self.indicator = appindicator.Indicator.new(
             "Job-Indicator", _ICONS[state], category=appindicator.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(_make_menu(self.close))
+        # Notification
+        self.state = None
+        self.set_state(state)
 
     def close(self, _):
         """Callback for the "Close" menu item.
@@ -49,9 +51,11 @@ class JIndicator(object):
         """Sets the tray icon and notifies if new_state is different than the current state. Otherwise, this is a no-op."""
         if self.state == new_state:
             return
+        self.state = new_state
         self.indicator.set_icon(_ICONS[new_state])
         # self.indicator.set_status(appindicator.IndicatorStatus.ATTENTION)
         # TODO: Make notification work
-        notf = Notify.Notification.new("Hazelhen Job Watcher", "{} switched to state {}".format(
+        notf = Notify.Notification.new("Batch Job Watcher", "Job `{}', state: {}".format(
             self.jobid, new_state), _ICONS[new_state])
+        notf.set_timeout(0)
         notf.show()

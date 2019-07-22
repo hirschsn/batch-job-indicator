@@ -12,6 +12,8 @@ import threading
 import sys
 import subprocess
 gi.require_version("Gtk", "3.0")
+gi.require_version("Notify", "0.7")
+from gi.repository import Notify
 from gi.repository import Gtk as gtk
 from gi.repository import GObject
 
@@ -45,6 +47,7 @@ def run(machine, user_name, every_sec=60):
     gtk.main_quit()
 
 def main():
+    Notify.init("Batch Job Watcher")
     parser = argparse.ArgumentParser(description="Watch batch jobs on foreign machines and display a tray icons.")
     parser.add_argument("--user", dest="user", help="Username on the foreign machine", type=str, default=r"$(whoami)")
     parser.add_argument("-n", dest="every_n", metavar="SEC", help="Number of seconds between two checks", type=int, default=60)
