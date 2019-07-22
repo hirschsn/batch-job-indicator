@@ -38,6 +38,9 @@ optional arguments:
   -n SEC       Number of seconds between two checks
 ```
 
+Note: The program closes SEC (-n parameter) after the last notification has been closed
+(right click on icon -> Close).
+
 ## License
 
 For the code see LICENSE for details. The icons are public domain.
