@@ -35,9 +35,11 @@ class JobRegistry(object):
 def run(machine, user_name, every_sec=60):
     jreg = JobRegistry()
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
-    p = subprocess.Popen("ssh {mach} 'sh -c '\''while :; do {cmd}; sleep {s}; done'\'''".format(mach=machine, cmd=jparser.command(user_name), s=every_sec), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    # Don't mess with escapes or quotes
+    cmd = "ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     # TODO: reopen connection if ssh dies.
-    while not jreg.empty() and p.poll() is not None:
+    while not jreg.empty() and p.poll() is None:
         jparser.parse(p.stdout.readline())
     p.terminate()
     gtk.main_quit()
