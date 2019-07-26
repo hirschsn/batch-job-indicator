@@ -46,7 +46,8 @@ class JobRegistry(object):
             # May also be called on manually closed jobs indicators
             # (class Cancelled Job)
             self.jobs[jobid].set_state(state)
-        else:
+        elif state != "C":
+            # Don't open a new indicator for an already completed job
             self.jobs[jobid] = JIndicator(jobid, state, self.close_callback)
 
 def run(machine, user_name, every_sec=60):
