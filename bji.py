@@ -55,9 +55,13 @@ def run(machine, user_name, every_sec=60):
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
     # Don't mess with escapes or quotes
     cmd = "ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    # TODO: reopen connection if ssh dies.
-    while not jreg.empty() and p.poll() is None:
+    p = None
+    while not jreg.empty():
+        # Initially open or(!) reopen the connection
+        # p.poll() returns the exit state of the process or None if it is still running.
+        if p is None or p.poll() is not None:
+            print("(Re-)opening remote connection.")
+            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         jparser.parse(p.stdout.readline())
     p.terminate()
     gtk.main_quit()
