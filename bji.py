@@ -57,6 +57,15 @@ def run(machine, user_name, every_sec=60):
     cmd = "ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
     p = None
     while not jreg.empty():
+        # UNIX ONLY hack.
+        # The return value of a process is negative if a signal has been received.
+        # Do not restart in this case to adequately react to a keyboard interrupt.
+        if p is not None and p.poll() is not None and p.poll() < 0:
+            # No need to jump to the end of the loop.
+            # SIGINT will take care of quitting the gtk main.
+            return
+        # END of hack
+
         # Initially open or(!) reopen the connection
         # p.poll() returns the exit state of the process or None if it is still running.
         if p is None or p.poll() is not None:
@@ -77,7 +86,10 @@ def main():
     GObject.threads_init()
     t = threading.Thread(target=run, args=(args.machine, args.user, args.every_n))
     t.start()
-    gtk.main()
+    try:
+        gtk.main()
+    except KeyboardInterrupt:
+        print("Caugth SIGING. Exiting.")
     t.join()
 
 if __name__ == '__main__':
