@@ -43,7 +43,8 @@ class JobRegistry(object):
     def handle_job(self, jobid, state):
         self.parsed_once = True
         if jobid in self.jobs:
-            # May also be called on cancelled jobs
+            # May also be called on manually closed jobs indicators
+            # (class Cancelled Job)
             self.jobs[jobid].set_state(state)
         else:
             self.jobs[jobid] = JIndicator(jobid, state, self.close_callback)
