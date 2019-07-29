@@ -18,7 +18,7 @@ $ PYTHONPATH=".:$PYTHONPATH" ./bji.py ARGS...
 
 ### Prereqs
 
-- Python 2.x (maybe 3 works?)
+- Python 2 or 3
 - python-gi (Notify, GObject, Gtk, AppIndicator3)
 
 ## Usage
