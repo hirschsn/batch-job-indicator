@@ -73,7 +73,8 @@ def run(machine, user_name, every_sec=60):
             print("(Re-)opening remote connection.")
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         jparser.parse(p.stdout.readline().decode())
-    p.terminate()
+    if p is not None:
+        p.terminate()
     gtk.main_quit()
 
 def main():
