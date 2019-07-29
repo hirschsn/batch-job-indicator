@@ -1,6 +1,6 @@
 # See LICENSE for license details.
 
-from hazelhen import MachineHazelhen
+from .hazelhen import MachineHazelhen
 
 _MACH_REGISTRY = {
     "hazelhen": MachineHazelhen
