@@ -41,6 +41,10 @@ optional arguments:
 Note: The program closes SEC (-n parameter) after the last notification has been closed
 (right click on icon -> Close).
 
+## Contributing
+
+All types of contributions are very welcome. Feel especially free to open PRs for other machines.
+
 ## License
 
 For the code see LICENSE for details. The icons are public domain.
