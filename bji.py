@@ -54,7 +54,8 @@ def run(machine, user_name, every_sec=60):
     jreg = JobRegistry()
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
     # Don't mess with escapes or quotes
-    cmd = "ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
+    # "exec" is a unix hack so that p.terminate() will cause the ssh process to terminate and not only the shell
+    cmd = "exec ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
     p = None
     while not jreg.empty():
         # UNIX ONLY hack.
