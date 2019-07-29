@@ -13,7 +13,7 @@ with libnotify.
 I currently don't feel like writing some fancy setup.py-thingy.
 Thus, clone the repo and do:
 ```sh
-$ PYTHONPATH=".:$PYTHONPATH" ./bji.py ARGS...
+$ env PYTHONPATH=".:$PYTHONPATH" ./bji.py ARGS...
 ```
 
 ### Prereqs
