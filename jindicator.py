@@ -25,9 +25,9 @@ _TEXT = {
 def _make_menu(close_callback):
     """Returns a menu with one item (Close)."""
     menu = gtk.Menu()
-    item_quit = gtk.MenuItem("Close")
-    item_quit.connect("activate", close_callback)
-    menu.append(item_quit)
+    item_close = gtk.MenuItem("Close Indicator")
+    item_close.connect("activate", close_callback)
+    menu.append(item_close)
     menu.show_all()
     return menu
 
