@@ -41,7 +41,9 @@ class JobRegistry(object):
         return self.parsed_once and self._all_jobs_cancelled()
 
     def handle_job(self, jobid, state):
-        self.parsed_once = True
+        if not self.parsed_once and state != "C":
+            self.parsed_once = True
+
         if jobid in self.jobs:
             # May also be called on manually closed jobs indicators
             # (class Cancelled Job)
