@@ -55,7 +55,6 @@ class JobRegistry(object):
 def run(machine, user_name, every_sec=60):
     jreg = JobRegistry()
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
-    # Don't mess with escapes or quotes
     cmd = "sh -c 'while :; do {cmd}; sleep {s}; done'".format(cmd=jparser.command(), s=every_sec)
     argv = ["ssh", machine, cmd]
     p = None
