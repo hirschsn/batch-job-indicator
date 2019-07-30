@@ -56,8 +56,8 @@ def run(machine, user_name, every_sec=60):
     jreg = JobRegistry()
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
     # Don't mess with escapes or quotes
-    # "exec" is a unix hack so that p.terminate() will cause the ssh process to terminate and not only the shell
-    cmd = "exec ssh {mach} 'sh -c '\\''while :; do {cmd}; sleep {s}; done'\\'''".format(mach=machine, cmd=jparser.command(), s=every_sec)
+    cmd = "sh -c 'while :; do {cmd}; sleep {s}; done'".format(cmd=jparser.command(), s=every_sec)
+    argv = ["ssh", machine, cmd]
     p = None
     while not jreg.empty():
         # UNIX ONLY hack.
@@ -73,7 +73,7 @@ def run(machine, user_name, every_sec=60):
         # p.poll() returns the exit state of the process or None if it is still running.
         if p is None or p.poll() is not None:
             print("(Re-)opening remote connection.")
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(argv, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         jparser.parse(p.stdout.readline().decode())
     if p is not None:
         p.terminate()
