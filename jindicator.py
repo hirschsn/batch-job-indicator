@@ -60,7 +60,6 @@ class JIndicator(object):
         self.state = new_state
         self.indicator.set_icon(_ICONS[new_state])
         # self.indicator.set_status(appindicator.IndicatorStatus.ATTENTION)
-        # TODO: Make notification work
         notf = Notify.Notification.new("Batch Job Watcher", "{}\n{}".format(
             self.jobid, _TEXT[new_state]), _ICONS[new_state])
         notf.set_timeout(0)
