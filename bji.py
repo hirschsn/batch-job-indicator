@@ -85,6 +85,7 @@ def main():
     try:
         gtk.main()
     except KeyboardInterrupt:
+        print("Caught SIGINT. Quitting...")
         # Continue quitting normally
         pass
     global SHOULD_QUIT
