@@ -52,31 +52,24 @@ class JobRegistry(object):
             # Don't open a new indicator for an already completed job
             self.jobs[jobid] = JIndicator(jobid, state, self.close_callback)
 
+SHOULD_QUIT = False
 def run(machine, user_name, every_sec=60):
     jreg = JobRegistry()
     jparser = parser_maker(machine)(user_name, jreg.handle_job)
     cmd = "sh -c 'while :; do {cmd}; sleep {s}; done'".format(cmd=jparser.command(), s=every_sec)
     argv = ["ssh", machine, cmd]
     p = None
-    while not jreg.empty():
-        # UNIX ONLY hack.
-        # The return value of a process is negative if a signal has been received.
-        # Do not restart in this case to adequately react to a keyboard interrupt.
-        if p is not None and p.poll() is not None and p.poll() < 0:
-            # No need to jump to the end of the loop.
-            # SIGINT will take care of quitting the gtk main.
-            return
-        # END of hack
-
+    while not jreg.empty() and not SHOULD_QUIT:
         # Initially open or(!) reopen the connection
         # p.poll() returns the exit state of the process or None if it is still running.
-        if p is None or p.poll() is not None:
+        if (p is None or p.poll() is not None) and not SHOULD_QUIT:
             print("(Re-)opening remote connection.")
             p = subprocess.Popen(argv, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         jparser.parse(p.stdout.readline().decode())
     if p is not None:
         p.terminate()
-    gtk.main_quit()
+    if not SHOULD_QUIT:
+        gtk.main_quit()
 
 def main():
     Notify.init("Batch Job Watcher")
@@ -92,7 +85,11 @@ def main():
     try:
         gtk.main()
     except KeyboardInterrupt:
-        print("Caugth SIGING. Exiting.")
+        print("Caught SIGINT. Quitting...")
+        # Continue quitting normally
+        pass
+    global SHOULD_QUIT
+    SHOULD_QUIT = True
     t.join()
 
 if __name__ == '__main__':
