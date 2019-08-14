@@ -14,6 +14,7 @@ _ICONS = {
     "R": os.path.realpath("./icons/running.svg"),
     "C": os.path.realpath("./icons/completed.svg"),
     "H": os.path.realpath("./icons/hold.svg"),
+    "?": os.path.realpath("./icons/unknown.svg"),
 }
 
 _TEXT = {
@@ -21,7 +22,14 @@ _TEXT = {
     "R": "Running",
     "C": "Completed",
     "H": "Hold",
+    "?": "unknown",
 }
+
+def _get_icon(state):
+    _ICONS.get(state, _ICONS["?"])
+
+def _get_text(state):
+    _TEXT.get(state, _TEXT["?"])
 
 
 def _make_menu(close_callback):
@@ -41,7 +49,7 @@ class JIndicator(object):
         self.jobid = jobid
         self.close_callback = close_cb
         self.indicator = appindicator.Indicator.new(
-            "Job-Indicator", _ICONS[state], category=appindicator.IndicatorCategory.APPLICATION_STATUS)
+            "Job-Indicator", _get_icon(state), category=appindicator.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(_make_menu(self.close))
         # Notification
@@ -63,6 +71,6 @@ class JIndicator(object):
         self.indicator.set_icon(_ICONS[new_state])
         # self.indicator.set_status(appindicator.IndicatorStatus.ATTENTION)
         notf = Notify.Notification.new("Batch Job Watcher", "{}\n{}".format(
-            self.jobid, _TEXT[new_state]), _ICONS[new_state])
+            self.jobid, _get_text(new_state)), _get_icon(new_state))
         notf.set_timeout(0)
         notf.show()
