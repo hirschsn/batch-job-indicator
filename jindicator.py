@@ -13,12 +13,14 @@ _ICONS = {
     "Q": os.path.realpath("./icons/queued.svg"),
     "R": os.path.realpath("./icons/running.svg"),
     "C": os.path.realpath("./icons/completed.svg"),
+    "H": os.path.realpath("./icons/hold.svg"),
 }
 
 _TEXT = {
     "Q": "Queued",
     "R": "Running",
     "C": "Completed",
+    "H": "Hold",
 }
 
 
