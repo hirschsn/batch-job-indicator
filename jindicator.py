@@ -26,10 +26,10 @@ _TEXT = {
 }
 
 def _get_icon(state):
-    _ICONS.get(state, _ICONS["?"])
+    return _ICONS.get(state, _ICONS["?"])
 
 def _get_text(state):
-    _TEXT.get(state, _TEXT["?"])
+    return _TEXT.get(state, _TEXT["?"])
 
 
 def _make_menu(close_callback):
